@@ -1,25 +1,25 @@
 
 #include "sketch_mar7a.h"
-#include "ReverseCarMain.h"
-Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset, int STBYpin)
+Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
 {
   In1 = In1pin;
   In2 = In2pin;
   PWM = PWMpin;
   Standby = STBYpin;
-  Offset = offset;
   
+  //forward rotation motor
   pinMode(In1, OUTPUT);
+  //reverse rotation motor
   pinMode(In2, OUTPUT);
   pinMode(PWM, OUTPUT);
   pinMode(Standby, OUTPUT);
 }
 void Motor::drive(int speed)
 {
+  Serial.println("hi");
   digitalWrite(Standby, HIGH);
-  speed = speed * Offset;
   if (speed>=0) fwd(speed);
-  else rev(-speed);
+  else rev(speed);
 }
 void Motor::drive(int speed, int duration)
 {
@@ -37,11 +37,18 @@ void Motor::fwd(int speed)
 
 void Motor::rev(int speed)
 {
+   int speed1 = speed * -1;
    digitalWrite(In1, LOW);
    digitalWrite(In2, HIGH);
-   analogWrite(PWM, speed);
+   Serial.println(speed);
+   analogWrite(PWM, speed1);
 }
-
+void Motor::back()
+{
+  digitalWrite(In1, LOW);
+  digitalWrite(In2, HIGH);
+  analogWrite(PWM, -DEFAULTSPEED);
+}
 void Motor::brake()
 {
    digitalWrite(In1, HIGH);
@@ -66,8 +73,7 @@ void forward(Motor motor1)
 
 void back(Motor motor1, int speed)
 {
-	int temp = abs(speed);
-	motor1.drive(-temp);
+	motor1.drive(-speed);
 }
 void back(Motor motor1)
 {
@@ -131,77 +137,49 @@ void progressiveDrive(Motor Motor1, int speed, int duration, int delta) {
   Motor1.drive(speed);
 }
 
-void rotate180(Motor left, Motor right)
+void rotate180(Motor m1, Motor m2)
 {
   int SLOWSPEED = 124;
   int TURNSPEED = 255 / 4;
   int ROTATION_DELAY_MS = 1000;
   // Set motors to go backwards at a slow speed
-  back(left, SLOWSPEED);
-  back(right, SLOWSPEED);
+  back(m1, SLOWSPEED);
+  back(m2, SLOWSPEED);
 
   // Wait for the car to come to a stop
   delay(ROTATION_DELAY_MS);
 
   // Turn the car to the right until it's facing the opposite direction
 
-  right(left, TURNSPEED);
-  left(right, -TURNSPEED);
+  right(m1, TURNSPEED);
+  left(m2, -TURNSPEED);
 
 
   // Stop the motors
-  left.brake();
-  right.brake();
+  m1.brake();
+  m2.brake();
 }
 // Pin Set up on Arduino
 #define AIN1 12
-#define AIN2 11
-#define STBY 10
+#define AIN2 8
 #define PWMA 13
 
 #define B1N1 22
 #define B1N2 24
-#define STBY 10
 #define PWMB 28
 
-const int offsetA = 1;
-const int offsetB = 1;
-Motor motor1 = Motor(AIN1, AIN2, PWMA, offsetA, STBY);
-Motor motor2 = Motor(B1N1, B1N2, PWMB, offsetB, STBY);
+#define STBY 10
+
+Motor motorBack = Motor(AIN1, AIN2, PWMA, STBY);
+Motor motorFront = Motor(B1N1, B1N2, PWMB, STBY);
 
 void setup()
 {
- //Nothing here
 }
 
 
 void loop()
 {
-   // Random Tests for Reverse Engineered Car
-   motor2.drive(255,1000);
-   motor2.drive(-255,1000);
-   motor2.brake();
-   motor1.drive(255,1000);
-   motor1.drive(-255,1000);
-   motor1.brake();
-   delay(1000);
-   
-   
-   forward(motor2, 150);
-   delay(1000);
-   
-   back(motor2, -150);
-   delay(1000);
-   
-   brake(motor2);
-   delay(1000);
-   
-   left(motor2, 100);
-   delay(1000);
-   right(motor2,100);
-   delay(1000);
-   forward(motor1, 150);
-   brake(motor2);
-   delay(1000);
-   progressiveDrive(25, 2000,1);
+  back(motorBack, 30);
+  delay(1000);  
 }
