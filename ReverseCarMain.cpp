@@ -1,5 +1,6 @@
 
 #include "sketch_mar7a.h"
+#include "ReverseCarMain.h"
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset, int STBYpin)
 {
   In1 = In1pin;
@@ -13,7 +14,6 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int offset, int STBYpin)
   pinMode(PWM, OUTPUT);
   pinMode(Standby, OUTPUT);
 }
-
 void Motor::drive(int speed)
 {
   digitalWrite(Standby, HIGH);
@@ -80,19 +80,80 @@ void left(Motor left,int speed)
 	
 }
 
-
 void right(Motor left, int speed)
 {
 	int temp = abs(speed)/2;
 	left.drive(temp);
 	
 }
+void motor(Motor left, Motor right)
+{
+   //pass
+}
+
 void brake(Motor motor1)
 {
 	motor1.brake();
 }
+void spinCircles(Motor left, Motor right, int speed) {
+  int duration = 500; // milliseconds
+  int num_spins = 3; // number of circles to spin
+  for (int i = 0; i < num_spins * 2; i++) {
+    if (i % 2 == 0) {
+      left.drive(-speed);
+      right.drive(speed);
+    } else {
+      left.drive(speed);
+      right.drive(-speed);
+    }
+    delay(duration);
+  }
+  left.brake();
+  right.brake();
+}
+
+void progressiveDrive(Motor Motor1, int speed, int duration, int delta) {
+  int currentSpeed = 0;
+  int increment = delta;
+
+  if (speed < 0) {
+    increment = -increment;
+  }
+
+  // Gradually increase/decrease the speed until we reach the desired value
+  while (abs(currentSpeed - speed) > abs(increment)) {
+    currentSpeed += increment;
+    Motor1.drive(currentSpeed);
+    delay(duration);
+  }
+
+  // Set the final speed
+  Motor1.drive(speed);
+}
+
+void rotate180(Motor left, Motor right)
+{
+  int SLOWSPEED = 124;
+  int TURNSPEED = 255 / 4;
+  int ROTATION_DELAY_MS = 1000;
+  // Set motors to go backwards at a slow speed
+  back(left, SLOWSPEED);
+  back(right, SLOWSPEED);
+
+  // Wait for the car to come to a stop
+  delay(ROTATION_DELAY_MS);
+
+  // Turn the car to the right until it's facing the opposite direction
+
+  right(left, TURNSPEED);
+  left(right, -TURNSPEED);
 
 
+  // Stop the motors
+  left.brake();
+  right.brake();
+}
+// Pin Set up on Arduino
 #define AIN1 12
 #define AIN2 11
 #define STBY 10
@@ -116,6 +177,7 @@ void setup()
 
 void loop()
 {
+   // Random Tests for Reverse Engineered Car
    motor2.drive(255,1000);
    motor2.drive(-255,1000);
    motor2.brake();
@@ -141,6 +203,4 @@ void loop()
    forward(motor1, 150);
    brake(motor2);
    delay(1000);
-   
-   
 }
