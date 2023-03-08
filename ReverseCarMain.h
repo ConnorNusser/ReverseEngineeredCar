@@ -2,9 +2,9 @@
 
 #ifndef sketch_mar7a_h
 #define sketch_mar7a_h
-
 #include <Arduino.h>
 #define DEFAULTSPEED 255  
+#define ROTATION 180
 
 
 
