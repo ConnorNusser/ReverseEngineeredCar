@@ -41,7 +41,7 @@ void back(Motor motor1, int speed);
 void back(Motor motor1);
 void left(Motor left, int speed);
 void right(Motor left, int speed);
-
+void progressiveDrive(Motor Motor1, int speed, int duration, int delta);
 void brake(Motor motor1);
 
 
