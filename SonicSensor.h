@@ -2,18 +2,18 @@
 #ifndef SonicSensor_h
 #define SonicSensor_h
 
-
-
-
 class SonicSensor
 {
-  public:
-    SonicSensor(int triggerPin, int echoPin) :{Create(triggerPin, echoPin)};  
-    void Create(int triggerPin, int echoPin);
-    float readData();
-	
   private:
-	int Trigger, int Echo
+	  int Trigger, Echo, Distance;
+  public:
+    SonicSensor();
+    SonicSensor(int triggerPin, int echoPin);
+    void create(int triggerPin, int echoPin);
+    float readData();
+    float readDataStream100();
+	
+
 };
 
 #endif

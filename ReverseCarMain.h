@@ -20,6 +20,8 @@ class Motor
 	
     void standby();	
     void back();
+    float executeBackSensor();
+    float executeFrontSensor();
 	
   private:
 	int In1, In2, PWM,Standby;

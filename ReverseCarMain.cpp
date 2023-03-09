@@ -2,6 +2,7 @@
 #include "SonicSensor.h"
 #define triggerPin 11
 #define echoPin 12
+#include <Arduino.h>
 
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
 {
@@ -20,13 +21,14 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
   pinMode(Standby, OUTPUT);
   
 }
-float Motor::executeSensor(){
-    this->frontSensor.readData();
-    return this->backSensor.readData()
+float Motor::executeBackSensor(){
+    return backSensor.readDataStream100();
+}
+float Motor::executeFrontSensor(){
+  return frontSensor.readDataStream100();
 }
 void Motor::drive(int speed)
 {
-  Serial.println("hi");
   digitalWrite(Standby, HIGH);
   if (speed>=0) fwd(speed);
   else rev(speed);
