@@ -3,6 +3,7 @@
 #define sketch_mar7a_h
 
 #include <Arduino.h>
+#include "SonicSensor.h"
 #define DEFAULTSPEED 255  
 
 
@@ -22,6 +23,8 @@ class Motor
 	
   private:
 	int In1, In2, PWM,Standby;
+  SonicSensor frontSensor, backSensor;
+
 	
 	void fwd(int speed);
 	void rev(int speed);

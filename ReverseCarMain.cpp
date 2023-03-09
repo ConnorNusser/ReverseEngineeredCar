@@ -1,6 +1,7 @@
 #include "sketch_mar7a.h"
-#include "SonicSensor.cpp"
-
+#include "SonicSensor.h"
+#define triggerPin 11
+#define echoPin 12
 
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
 {
@@ -8,6 +9,8 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
   In2 = In2pin;
   PWM = PWMpin;
   Standby = STBYpin;
+  frontSensor.create(triggerPin, echoPin);
+  backSensor.create(triggerPin, echoPin);
   
   //forward rotation motor
   pinMode(In1, OUTPUT);
@@ -15,6 +18,11 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
   pinMode(In2, OUTPUT);
   pinMode(PWM, OUTPUT);
   pinMode(Standby, OUTPUT);
+  
+}
+float Motor::executeSensor(){
+    this->frontSensor.readData();
+    return this->backSensor.readData()
 }
 void Motor::drive(int speed)
 {
@@ -161,37 +169,4 @@ void rotate180(Motor m1, Motor m2)
   m1.brake();
   m2.brake();
 }
-// Pin Set up on Arduino
-#define AIN1 12
-#define AIN2 8
-#define PWMA 13
 
-#define B1N1 22
-#define B1N2 24
-#define PWMB 28
-
-#define STBY 10
-
-#define triggerPin 11
-#define echoPin 12
-
-Motor motorBack = Motor(AIN1, AIN2, PWMA, STBY);
-Motor motorFront = Motor(B1N1, B1N2, PWMB, STBY);
-
-SonicSensor frontSensor = SonicSensor(triggerPin,echoPin);
-
-void setup()
-{
-    pinMode(triggerPin, OUTPUT);
-    pinMode(echoPin, INPUT);
-    Serial.begin(9600);
-}
-
-
-void loop()
-{
-  Serial.print("Distance in Feet:");
-  Serial.print(frontSensor.readData());
-  Serial.println();
-  delay(10000);
-}
