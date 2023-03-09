@@ -1,5 +1,7 @@
-
 #include "sketch_mar7a.h"
+#include "SonicSensor.cpp"
+
+
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
 {
   In1 = In1pin;
@@ -170,16 +172,26 @@ void rotate180(Motor m1, Motor m2)
 
 #define STBY 10
 
+#define triggerPin 11
+#define echoPin 12
+
 Motor motorBack = Motor(AIN1, AIN2, PWMA, STBY);
 Motor motorFront = Motor(B1N1, B1N2, PWMB, STBY);
 
+SonicSensor frontSensor = SonicSensor(triggerPin,echoPin);
+
 void setup()
 {
+    pinMode(triggerPin, OUTPUT);
+    pinMode(echoPin, INPUT);
+    Serial.begin(9600);
 }
 
 
 void loop()
 {
-  back(motorBack, 30);
-  delay(1000);  
+  Serial.print("Distance in Feet:");
+  Serial.print(frontSensor.readData());
+  Serial.println();
+  delay(10000);
 }
