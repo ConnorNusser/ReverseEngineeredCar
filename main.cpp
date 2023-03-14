@@ -2,20 +2,23 @@
 #include "ReverseCarMain.h"
 
 // Pin Set up on Arduino
-#define AIN1 
-#define AIN2 36
-#define PWMA 38
+#define AN1 
+#define AN2 28
+#define PWMA 30
 
-#define B1N1 32
-#define B1N2 30
-#define PWMB 28
+//changed pinout names from AINx to ANx and B1Nx to BNx to reflect pinout on new chip
+
+#define BN1 36
+#define BN2 38
+#define PWMB 
+//deleted port assignment for PWMB
 
 #define STBY 34
 
 #define triggerPin 11
 #define echoPin 12
-Motor motorBack = Motor(AIN1, AIN2, PWMA, STBY);
-Motor motorFront = Motor(B1N2, B1N2, PWMB, STBY);
+Motor motorBack = Motor(AN1, AN2, PWMA, STBY);
+Motor motorFront = Motor(BN2, BN2, PWMB, STBY);
 
 void setup() {
   pinMode(triggerPin, OUTPUT);  // Sets the trigPin as an Output
