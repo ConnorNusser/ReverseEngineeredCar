@@ -1,7 +1,8 @@
 #include "AutonomousCar.h"
 #include "SonicSensor.h"
-// Distances is in inches
-#define OBSTACLE_DISTANCE_THRESHOLD 2
+// Distances in feet
+#define OBSTACLE_DISTANCE_THRESHOLD 10
+#define ARRIVAL_DISTANCE 1.5
 AutonomousCar::AutonomousCar(Motor& backMotor, Motor& frontMotor, SonicSensor& frontSensor, SonicSensor& rearSensor)
     : backMotor_(frontMotor), frontMotor_(backMotor), frontSensor_(frontSensor), rearSensor_(rearSensor)
 {
@@ -12,6 +13,7 @@ AutonomousCar::AutonomousCar(Motor& backMotor, Motor& frontMotor, SonicSensor& f
     currentLatitude_ = 0;
     currentLongitude_ = 0
     isNavigating_ = false;
+    isDrivingForward = true;
 }
 
 AutonomousCar::~AutonomousCar()
@@ -51,6 +53,15 @@ float AutonomousCar::getDistanceFromObstacle()
     return distance;
 }
 
+bool AutonomousCar::getArrivalDistance(){
+    float distanceFront = frontSensor_.getDistance();
+    float distanceBack = backSensor_.getDistance();
+    if distanceFront < ARRIVAL_DISTANCE {
+        return true;
+    }
+    return false;
+}
+
 bool AutonomousCar::isLaneDepartureDetected()
 {
     // Implement lane departure detection algorithm here
@@ -71,9 +82,14 @@ bool AutonomousCar::isObstacleDetected()
 void AutonomousCar::accelerate(float speed)
 {
     // Set the speed of the left and right motors
-    leftMotor_.setSpeed(speed);
-    rightMotor_.setSpeed(speed);
+    //backMotor_.setSpeed(speed);
     currentSpeed_ = speed;
+}
+void AutonomousCar::drive()
+{
+    //0 - 255
+    int speed = 255 / 4
+    backMotor_.drive(speed, 1000);
 }
 
 void AutonomousCar::brake()
@@ -114,11 +130,24 @@ void AutonomousCar::turnRight(int amt)
     frontMotor_.right(amt);
     currentDirection_ += TURN_ANGLE;
 }
+void AutonomousCar::rotate(){
+    //-255 to 255
+    int speed = 255 / 4;
+    frontMotor_.drive(speed, 250);
+    backMotor_.drive(speed * - 1, 1000);
+}
 void AutonomousCar::autoDrive()
 {
     //auto drive simulation 1
     while(true)
     {
-
+     //we drive :D
+     //we check distance if
+     this->drive();
+     bool isArrived = this->getArrivalDistance();
+     if (isArrived){
+        this->brake();
+        this->rotate();
+     }  
     }
 }

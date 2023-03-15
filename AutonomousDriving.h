@@ -22,6 +22,7 @@ public:
 
     // Control functions
     void accelerate(float speed);
+    void drive();
     void brake();
     void turnLeft();
     void turnRight();
