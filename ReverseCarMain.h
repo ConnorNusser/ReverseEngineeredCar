@@ -20,6 +20,10 @@ class Motor
 	
     void standby();	
     void back();
+    void right();
+    void left();
+    void right(int speed);
+    void left(int speed);
     float executeBackSensor();
     float executeFrontSensor();
 	

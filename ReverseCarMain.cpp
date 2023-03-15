@@ -3,6 +3,7 @@
 #define triggerPin 11
 #define echoPin 12
 #include <Arduino.h>
+#define maxturn 255
 
 Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
 {
@@ -66,6 +67,34 @@ void Motor::brake()
    digitalWrite(In2, HIGH);
    analogWrite(PWM,0);
 }
+void Motor::left(Motor front)
+{
+  //turning motor
+	int temp = abs(255)/2;
+	drive(-temp);
+	
+}
+void Motor::left(int speed)
+{
+  //turning motor
+	int temp = abs(speed)/2;
+	drive(-temp);
+	
+}
+void Motor::right(int speed)
+{
+  // turning motor
+	int temp = abs(speed)/2;
+	drive(temp);
+	
+}
+void Motor::right()
+{
+  // turning motor
+	int temp = abs(speed)/2;
+	drive(temp);
+	
+}
 
 void Motor::standby()
 {
@@ -90,22 +119,33 @@ void back(Motor motor1)
 {
 	motor1.drive(-DEFAULTSPEED);
 }
-void left(Motor left,int speed)
+void left(Motor front)
 {
-	int temp = abs(speed)/2;
-	left.drive(-temp);
+  //turning motor
+	int temp = abs(255)/2;
+	front.drive(temp);
 	
 }
-
-void right(Motor left, int speed)
+void left(Motor front,int speed)
 {
+  //turning motor
 	int temp = abs(speed)/2;
-	left.drive(temp);
+	front.drive(-temp);
 	
 }
-void motor(Motor left, Motor right)
+void right(Motor front, int speed)
 {
-   //pass
+  // turning motor
+	int temp = abs(speed)/2;
+	front.drive(temp);
+	
+}
+void right(Motor front)
+{
+  // turning motor
+	int temp = abs(speed)/2;
+	front.drive(temp);
+	
 }
 
 void brake(Motor motor1)

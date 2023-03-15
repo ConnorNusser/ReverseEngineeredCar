@@ -88,23 +88,32 @@ void AutonomousCar::turnLeft()
 {
     // Turn the car left by setting the speed of the right motor to zero
     backMotor_.setSpeed(currentSpeed_);
-    rightMotor_.setSpeed(0.0f);
+    frontMotor_.left();
     currentDirection_ -= TURN_ANGLE;
 }
 
 void AutonomousCar::turnRight()
 {
     // Turn the car right by setting the speed of the left motor to zero
-    leftMotor_.setSpeed(0.0f);
-    rightMotor_.setSpeed(currentSpeed_);
+    backMotor_.drive(currentSpeed_);
+    frontMotor_.right();
     currentDirection_ += TURN_ANGLE;
 }
-
-void AutonomousCar::park()
+void AutonomousCar::turnLeft(int amt)
 {
-    // Implement parking algorithm here
+    // Turn the car left by setting the speed of the right motor to zero
+    backMotor_.setSpeed(currentSpeed_);
+    frontMotor_.left(int amt);
+    currentDirection_ -= TURN_ANGLE;
 }
 
+void AutonomousCar::turnRight()
+{
+    // Turn the car right by setting the speed of the left motor to zero
+    backMotor_.drive(currentSpeed_);
+    frontMotor_.right(int amt);
+    currentDirection_ += TURN_ANGLE;
+}
 void AutonomousCar::sendTelemetry()
 {
     // Send telemetry data to a remote server

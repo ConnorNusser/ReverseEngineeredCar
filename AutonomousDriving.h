@@ -25,7 +25,8 @@ public:
     void brake();
     void turnLeft();
     void turnRight();
-    void park();
+    void turnLeft(int amt);
+    void turnRight(int amt);
 
     // Communication functions
     void sendTelemetry();
