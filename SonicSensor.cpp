@@ -32,7 +32,7 @@ float SonicSensor::readData()
     return distanceFT;
 };
 
-float SonicSensor::readDataStream100(){
+float SonicSensor::getDistance(){
   float total = 0;
   int badReadings = 0;
   float localNumber;

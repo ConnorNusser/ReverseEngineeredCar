@@ -11,7 +11,7 @@ class SonicSensor
     SonicSensor(int triggerPin, int echoPin);
     void create(int triggerPin, int echoPin);
     float readData();
-    float readDataStream100();
+    float getDistance();
 	
 
 };
