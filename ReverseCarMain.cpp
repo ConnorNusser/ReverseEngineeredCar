@@ -52,7 +52,6 @@ void Motor::rev(int speed)
    int speed1 = speed * -1;
    digitalWrite(In1, LOW);
    digitalWrite(In2, HIGH);
-   Serial.println(speed);
    analogWrite(PWM, speed1);
 }
 void Motor::back()

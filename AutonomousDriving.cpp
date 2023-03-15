@@ -2,8 +2,8 @@
 #include "SonicSensor.h"
 // Distances is in inches
 #define OBSTACLE_DISTANCE_THRESHOLD 2
-AutonomousCar::AutonomousCar(Motor& leftMotor, Motor& rightMotor, SonicSensor& frontSensor, SonicSensor& rearSensor)
-    : leftMotor_(leftMotor), rightMotor_(rightMotor), frontSensor_(frontSensor), rearSensor_(rearSensor)
+AutonomousCar::AutonomousCar(Motor& backMotor, Motor& frontMotor, SonicSensor& frontSensor, SonicSensor& rearSensor)
+    : backMotor_(leftMotor), frontMotor_(rightMotor), frontSensor_(frontSensor), rearSensor_(rearSensor)
 {
     // Initialize internal variables
     // MaxSpeed is 255
@@ -79,15 +79,15 @@ void AutonomousCar::accelerate(float speed)
 void AutonomousCar::brake()
 {
     // Stop the left and right motors
-    leftMotor_.stop();
-    rightMotor_.stop();
+    frontMotor_.brake();
+    backMotor_.brake();
     currentSpeed_ = 0.0f;
 }
 
 void AutonomousCar::turnLeft()
 {
     // Turn the car left by setting the speed of the right motor to zero
-    leftMotor_.setSpeed(currentSpeed_);
+    backMotor_.setSpeed(currentSpeed_);
     rightMotor_.setSpeed(0.0f);
     currentDirection_ -= TURN_ANGLE;
 }

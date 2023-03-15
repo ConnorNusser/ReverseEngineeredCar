@@ -7,7 +7,7 @@
 
 class AutonomousCar {
 public:
-    AutonomousCar(Motor& leftMotor, Motor& rightMotor, SonicSensor& frontSensor, SonicSensor& rearSensor);
+    AutonomousCar(Motor& frontMotor, Motor& backMotor, SonicSensor& frontSensor, SonicSensor& rearSensor);
     ~AutonomousCar();
 
     // Navigation functions
@@ -40,8 +40,8 @@ private:
     bool isNavigating_;
 
     // Hardware components
-    Motor& leftMotor_;
-    Motor& rightMotor_;
+    Motor& frontMotor_;
+    Motor& backMotor_;
     SonicSensor& frontSensor_;
     SonicSensor& rearSensor_;
 };
