@@ -67,7 +67,7 @@ void Motor::brake()
    digitalWrite(In2, HIGH);
    analogWrite(PWM,0);
 }
-void Motor::left(Motor front)
+void Motor::left()
 {
   //turning motor
 	int temp = abs(255)/2;
