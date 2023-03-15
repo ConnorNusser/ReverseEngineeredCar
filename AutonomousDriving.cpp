@@ -3,7 +3,7 @@
 // Distances is in inches
 #define OBSTACLE_DISTANCE_THRESHOLD 2
 AutonomousCar::AutonomousCar(Motor& backMotor, Motor& frontMotor, SonicSensor& frontSensor, SonicSensor& rearSensor)
-    : backMotor_(leftMotor), frontMotor_(rightMotor), frontSensor_(frontSensor), rearSensor_(rearSensor)
+    : backMotor_(frontMotor), frontMotor_(backMotor), frontSensor_(frontSensor), rearSensor_(rearSensor)
 {
     // Initialize internal variables
     // MaxSpeed is 255
@@ -87,7 +87,7 @@ void AutonomousCar::brake()
 void AutonomousCar::turnLeft()
 {
     // Turn the car left by setting the speed of the right motor to zero
-    backMotor_.setSpeed(currentSpeed_);
+    backMotor_.drive(currentSpeed_);
     frontMotor_.left();
     currentDirection_ -= TURN_ANGLE;
 }
@@ -102,24 +102,23 @@ void AutonomousCar::turnRight()
 void AutonomousCar::turnLeft(int amt)
 {
     // Turn the car left by setting the speed of the right motor to zero
-    backMotor_.setSpeed(currentSpeed_);
-    frontMotor_.left(int amt);
+    backMotor_.drive(currentSpeed_);
+    frontMotor_.left(amt);
     currentDirection_ -= TURN_ANGLE;
 }
 
-void AutonomousCar::turnRight()
+void AutonomousCar::turnRight(int amt)
 {
     // Turn the car right by setting the speed of the left motor to zero
     backMotor_.drive(currentSpeed_);
-    frontMotor_.right(int amt);
+    frontMotor_.right(amt);
     currentDirection_ += TURN_ANGLE;
 }
-void AutonomousCar::sendTelemetry()
+void AutonomousCar::autoDrive()
 {
-    // Send telemetry data to a remote server
-}
+    //auto drive simulation 1
+    while(true)
+    {
 
-void AutonomousCar::receiveCommands()
-{
-    // Receive commands from a remote server and execute them
+    }
 }

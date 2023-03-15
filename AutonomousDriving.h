@@ -29,8 +29,7 @@ public:
     void turnRight(int amt);
 
     // Communication functions
-    void sendTelemetry();
-    void receiveCommands();
+    void autoDrive();
 
 private:
     // Internal variables

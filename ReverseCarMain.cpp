@@ -23,10 +23,10 @@ Motor::Motor(int In1pin, int In2pin, int PWMpin, int STBYpin)
   
 }
 float Motor::executeBackSensor(){
-    return backSensor.readDataStream100();
+    return backSensor.getDistance();
 }
 float Motor::executeFrontSensor(){
-  return frontSensor.readDataStream100();
+  return frontSensor.getDistance();
 }
 void Motor::drive(int speed)
 {
